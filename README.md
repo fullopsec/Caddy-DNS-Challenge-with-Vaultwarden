@@ -42,6 +42,9 @@ Make it executable:
 
 `sudo chmod +x /usr/local/bin/caddy`
 
+`sudo chmod +x caddy`
+
+
 Give the caddy binary the ability to bind to privileged ports :
 
 `sudo setcap cap\_net\_bind_service=+ep /usr/local/bin/caddy`
