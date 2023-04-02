@@ -90,7 +90,9 @@ Start caddy by running
 
 In your DNS(cloudflare for me) add the desired subdomain for the service you are going to install(Vaultwarden here)
 
-You must use the **LOCAL** IP of your server as content
+You must use the **LOCAL** IP of your server as content.
+
+You must not proxy the requests(DNS only)
 
 ![image](https://user-images.githubusercontent.com/114147068/229375994-2687dc99-bd8b-4de7-9f2b-d149a22a782a.png)
 
