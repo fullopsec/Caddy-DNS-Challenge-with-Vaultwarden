@@ -125,7 +125,7 @@ services:
     environment:
       DOMAIN: "https://vaultwarden.fullopsec.com"  # Your domain.
       EMAIL: "fullopsec@fullopsec.com"                 # The email address to use for ACME registration.
-      CLOUDFLARE_TOKEN: "<YOUR_TOKEN>"                   # Your Duck DNS token.
+      CLOUDFLARE_TOKEN: "<YOUR_TOKEN>"                   # Your DNS token.
       LOG_FILE: "/data/access.log"
 ```
 
