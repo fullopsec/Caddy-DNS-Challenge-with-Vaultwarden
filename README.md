@@ -98,7 +98,7 @@ You must not proxy the requests(DNS only)
 
 Now we need to make the new vaultwarden docker-compose file:
 
-Put the compiled caddy binary in the same folder as the compose
+Put the compiled caddy binary and Caddyfile in the same folder as the compose file.
 
 docker-compose.yml:
 
