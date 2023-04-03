@@ -2,8 +2,6 @@
 
 Vaultwarden forces us to use SSL.
 
-I don't want to open any ports on my internet Box.
-
 That why we are using Caddy DNS challenges to get our certificates.
 
 __________________________
