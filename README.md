@@ -4,6 +4,9 @@ Vaultwarden forces us to use SSL.
 
 That why we are using Caddy DNS challenges to get our certificates.
 
+Requirement:
+You need a domain name that is linked to a Cloudflare account.
+
 __________________________
 
 
