@@ -1,57 +1,32 @@
 # Caddy-DNS-Challenge-with-Vaultwarden
 
-Vaultwarden forces us to use SSL.
+This is a guide to configure Caddy with Vaultwarden using Cloudflare DNS challenges to obtain SSL certificates.
 
-That why we are using Caddy DNS challenges to get our certificates.
+## Video tutorial
 
-Requirement:
-You need a domain name that is linked to a Cloudflare account.
+https://www.youtube.com/watch?v=0Ri3GVDc4pM
 
-__________________________
+## Requirements
+* A domain name linked to a Cloudflare account.
+* Docker and Docker Compose installed on your server.
 
-
-
-Go create a custom token for the API of cloudflare(I use cloudflare)
-
-```
-In the upper right, click the person icon and navigate to My Profile, and then select the API Tokens tab.
-Click the Create Token button, and then Use template on Edit zone DNS.
-Edit the Token name field if you prefer a more descriptive name.
-Under Permissions must be,  Zone / DNS / Edit 
-Add another permission: Zone / Zone / Read.
-Under Zone Resources, set Include / Specific zone / example.com 
-Under TTL, set an End Date for when your token will become inactive. You might want to choose one far in the future.
-Create the token and copy the token value.
-```
-
-Test your token with the provided command.
-
-Copy your API token!
-
-Go download the caddy dns wrapper with cloudflare
->https://caddyserver.com/download?package=github.com%2Fcaddy-dns%2Fcloudflare
-
-Make a directory on your server and put the downloaded file into it.
-
-Rename the file as "caddy"
-
-Copy caddy in /usr/local/bin/:
-
-`sudo cp caddy /usr/local/bin/caddy`
-
-Make it executable:
-
-`sudo chmod +x /usr/local/bin/caddy`
-
-`sudo chmod +x caddy`
-
-
-Give the caddy binary the ability to bind to privileged ports :
-
-`sudo setcap cap\_net\_bind_service=+ep /usr/local/bin/caddy`
-
-Create a file named "Caddyfile" with the following content:
-
+## Setup
+1. Create a custom token for the Cloudflare API by following these steps:
+    * Click the person icon on the upper right and go to My Profile, then select the API Tokens tab. URL: https://dash.cloudflare.com/profile/api-tokens
+    * Click the Create Token button, then go "Create Custom Token".
+    * Edit the Token name field if you prefer a more descriptive name.
+    * Under Permissions must be, choose Zone / DNS / Edit.
+    * Add another permission: Zone / Zone / Read.
+    * Under Zone Resources, set Include / Specific zone / example.com (replace example.com with your domain).
+    * Under TTL, set an End Date for when your token will become inactive. You might want to choose one far in the future.
+    * Create the token and copy the token value.
+2. Test your token with the provided command.
+3. Download the Caddy DNS wrapper for Cloudflare from https://caddyserver.com/download?package=github.com%2Fcaddy-dns%2Fcloudflare.
+4. Put the downloaded file in a directory on your server, then rename it as "caddy".
+5. Copy caddy to /usr/local/bin/ by running `sudo cp caddy /usr/local/bin/caddy`.
+6. Make it executable by running `sudo chmod +x /usr/local/bin/caddy` and `sudo chmod +x caddy`.
+7. Give the caddy binary the ability to bind to privileged ports by running `sudo setcap cap_net_bind_service=+ep /usr/local/bin/caddy`.
+8. Create a file named "Caddyfile" with the following content:
 ```
 {$DOMAIN}:443 {
   log {
@@ -77,32 +52,14 @@ Create a file named "Caddyfile" with the following content:
   reverse_proxy vaultwarden:80
 }
 ```
-
-Create temp variables to test the Caddyfile:
-
+9. Create temporary variables to test the Caddyfile by running:
 ```
 export CLOUDFLARE_TOKEN=<YOUR_TOKEN>
 export LOG_FILE=/data/access.log
 ```
-
-Start caddy by running
-
-`caddy run`
-
-In your DNS(cloudflare for me) add the desired subdomain for the service you are going to install(Vaultwarden here)
-
-You must use the **LOCAL** IP of your server as content.
-
-You must not proxy the requests(DNS only)
-
-![image](https://user-images.githubusercontent.com/114147068/229375994-2687dc99-bd8b-4de7-9f2b-d149a22a782a.png)
-
-Now we need to make the new vaultwarden docker-compose file:
-
-Put the compiled caddy binary and Caddyfile in the same folder as the compose file.
-
-docker-compose.yml:
-
+10. Start Caddy by running `caddy run`. Stop it after a few seconds when everything seems loaded.
+11. In your DNS (Cloudflare for this guide), add the desired subdomain for the service you are going to install (Vaultwarden in this case). Use the **LOCAL** IP of your server as content and do not proxy the requests (DNS only).
+12. Create a docker-compose.yml file with the following content:
 ```
 version: '3'
 
@@ -129,18 +86,18 @@ services:
       - ./config:/config
       - ./data:/data
     environment:
-      DOMAIN: "https://vaultwarden.fullopsec.com"  # Your domain.
-      EMAIL: "fullopsec@fullopsec.com"                 # The email address to use for ACME registration.
+      DOMAIN: "https://<YOUR_SUBDOMAIN>.<YOUR_DOMAIN>"  # Your domain. Example: https://vaultwarden.fullopsec.com
+      EMAIL: "<YOUR_USERNAME>@<YOUR_DOMAIN>"                 # The email address to use for ACME registration. Example fullopsec@fullopsec.com
       CLOUDFLARE_TOKEN: "<YOUR_TOKEN>"                   # Your DNS token.
       LOG_FILE: "/data/access.log"
 ```
 
-You can change any path as ou wish, this is an exemple of a simple setup with everything in the same folder.
+You can change any path as you wish. This is an example of a simple setup with everything in the same folder.
 
-Dont Forget to put your CLOUDFLARE_TOKEN and the correct DOMAIN (which include the newly created subdomain).
+Dont Forget to put your CLOUDFLARE_TOKEN and the correct DOMAIN.
 
 Try it:
 
 `sudo docker compose up -d`
 
-Then browse to the DOMAIN (https://vaultwarden.fullopsec.com here)
+Then browse to the DOMAIN (https://vaultwarden.fullopsec.com in my case)
