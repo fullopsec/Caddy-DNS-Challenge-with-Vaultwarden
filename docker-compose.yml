@@ -23,7 +23,7 @@ services:
       - ./config:/config
       - ./data:/data
     environment:
-      DOMAIN: "https://vaultwarden.fullopsec.com"  # Your domain.
-      EMAIL: "fullopsec@fullopsec.com"                 # The email address to use for ACME registration.
+      DOMAIN: "https://<YOUR_SUBDOMAIN>.<YOUR_DOMAIN>"  # Your domain. Example: https://vaultwarden.fullopsec.com
+      EMAIL: "<YOUR_USERNAME>@<YOUR_DOMAIN>"                 # The email address to use for ACME registration. Example fullopsec@fullopsec.com
       CLOUDFLARE_TOKEN: "<YOUR_TOKEN>"                   # Your DNS token.
       LOG_FILE: "/data/access.log"
