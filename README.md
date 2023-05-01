@@ -94,10 +94,10 @@ services:
 
 You can change any path as you wish. This is an example of a simple setup with everything in the same folder.
 
-Dont Forget to put your CLOUDFLARE_TOKEN and the correct DOMAIN.
+Don't forget to put your CLOUDFLARE_TOKEN and the correct DOMAIN.
 
-Try it:
+13. Launching:
 
 `sudo docker compose up -d`
 
-Then browse to the DOMAIN (https://vaultwarden.fullopsec.com in my case)
+Then browse to the subdomain (https://vaultwarden.fullopsec.com in my case)
